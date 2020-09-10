@@ -1,19 +1,14 @@
-import Promise from 'bluebird'
-import mongoose from 'mongoose'
-global.Promise = Promise
+var admin = require("firebase-admin");
 
-if (process.env.NODE_ENV !== 'production') {
+var serviceAccount = require("../eday-firebase.json");
+
+global.Promise = require('bluebird');
+
+if(process.env.NODE_ENV !== 'production') {
   require('dotenv').load()
 }
 
-mongoose.Promise = Promise
-
-require('../models')
-
-export function initializeDatabase() {
-  return mongoose.connect(process.env.DATABASE_URL)
-}
-
-
-
-
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://eday-89a15.firebaseio.com"
+});
